@@ -10,6 +10,7 @@
  */
 
 namespace Omnipay\Payline\Message;
+use Carbon\Carbon;
 
 /**
  * Authorize Request.
@@ -23,7 +24,7 @@ class DirectAuthorizeRequest extends AbstractRequest
      */
     public function getMethod()
     {
-        return 'doWebPayment';
+        return 'doAuthorization';
     }
 
     /**
@@ -50,10 +51,15 @@ class DirectAuthorizeRequest extends AbstractRequest
 
     public function getData()
     {
+        $now = Carbon::now();
+        $this->setDate($now);
+
+        $card = $this->getCard()->getParameters();
+
         $data['payment'] = array(
             'amount' => $this->getAmountInteger(),
             'currency' => $this->getCurrencyNumeric(),
-            'action' => 100,
+            'action' => 101,
             'mode' => 'CPT',
         );
 
@@ -62,10 +68,16 @@ class DirectAuthorizeRequest extends AbstractRequest
         }
 
         $data['order'] = array(
-            'ref' => $this->getTransactionReference(),
+            'ref' => preg_replace("/[^a-z0-9.]+/i", "", $card['email'].$this->getDate()),
             'amount' => $this->getAmountInteger(),
             'currency' => $this->getCurrencyNumeric(),
         );
+
+        $data['card']['number'] = $card['number'];
+        $data['card']['type'] = 'VISA';
+        $data['card']['expirationDate'] = $card['expiryMonth'].substr($card['expiryYear'], -2);
+        $data['card']['cvx'] = $card['cvv'];
+        $data['card']['cardholder'] = $card['email'];
 
         $data['order']['date'] = $this->getDate();
 
@@ -73,16 +85,17 @@ class DirectAuthorizeRequest extends AbstractRequest
         $data['cancelURL'] = $this->getCancelUrl();
         $data['notificationURL'] = $this->getNotifyUrl();
 
+        //dump($this);dump($data);die;
         return array_replace_recursive($this->getBaseData(), $data);
     }
 
     /**
      * @param \stdClass $data
      *
-     * @return WebAuthorizeResponse
+     * @return DirectAuthorizeResponse
      */
     protected function createResponse($data)
     {
-        return $this->response = new WebAuthorizeResponse($this, $data);
+        return $this->response = new DirectAuthorizeResponse($this, $data);
     }
 }
