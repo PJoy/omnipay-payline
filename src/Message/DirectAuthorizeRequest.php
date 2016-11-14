@@ -66,9 +66,8 @@ class DirectAuthorizeRequest extends AbstractRequest
         if ($this->getContractNumber()) {
             $data['payment']['contractNumber'] = $this->getContractNumber();
         }
-
         $data['order'] = array(
-            'ref' => preg_replace("/[^a-z0-9.]+/i", "", $card['email'].$this->getDate()),
+            'ref' => $this->getTransactionReference(),
             'amount' => $this->getAmountInteger(),
             'currency' => $this->getCurrencyNumeric(),
         );
@@ -85,7 +84,6 @@ class DirectAuthorizeRequest extends AbstractRequest
         $data['cancelURL'] = $this->getCancelUrl();
         $data['notificationURL'] = $this->getNotifyUrl();
 
-        //dump($this);dump($data);die;
         return array_replace_recursive($this->getBaseData(), $data);
     }
 

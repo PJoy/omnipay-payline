@@ -173,8 +173,21 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $data;
     }
 
+    /**
+     * Get the transaction reference.
+     *
+     * @return string
+     */
+    public function getTransactionReference()
+    {
+        //dump($this);die;
+        return $this->getParameter('transactionId');
+    }
+
+
     public function sendData($data)
     {
+        //dump($data);die;
         $response = $this->httpClient->{$this->getMethod()}($data);
 
         return $this->createResponse($response);

@@ -36,6 +36,7 @@ class DirectAuthorizeResponse extends AbstractResponse implements RedirectRespon
 
     public function getRedirectUrl()
     {
+        //dump($this);die;
         return $this->getRequest()->getParameters()['returnUrl'];
     }
 }
