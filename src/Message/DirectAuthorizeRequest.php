@@ -73,8 +73,8 @@ class DirectAuthorizeRequest extends AbstractRequest
         );
 
         $data['card']['number'] = $card['number'];
-        $data['card']['type'] = 'VISA';
-        $data['card']['expirationDate'] = $card['expiryMonth'].substr($card['expiryYear'], -2);
+        $data['card']['type'] = 'MASTERCARD';
+        $data['card']['expirationDate'] = sprintf('%02u',$card['expiryMonth']).substr($card['expiryYear'], -2);
         $data['card']['cvx'] = $card['cvv'];
         $data['card']['cardholder'] = $card['email'];
 

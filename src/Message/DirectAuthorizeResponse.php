@@ -21,7 +21,10 @@ class DirectAuthorizeResponse extends AbstractResponse implements RedirectRespon
 {
     public function isRedirect()
     {
-        return true;
+        if ($this->isSuccessful()) return true;
+        else {
+            dump($this);die;
+        }
     }
 
     public function getRedirectMethod()
@@ -36,7 +39,6 @@ class DirectAuthorizeResponse extends AbstractResponse implements RedirectRespon
 
     public function getRedirectUrl()
     {
-        //dump($this);die;
         return $this->getRequest()->getParameters()['returnUrl'];
     }
 }
