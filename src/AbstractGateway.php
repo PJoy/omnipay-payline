@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request as HttpRequest;
 abstract class AbstractGateway extends \Omnipay\Common\AbstractGateway
 {
     protected $liveEndpoint = 'http://www.payline.com/wsdl/v4_0/production';
-    protected $testEndpoint = 'http://www.payline.com/wsdl/v4_0/homologation';
+    protected $testEndpoint = 'http://www.payline.com/wsdl/v4_0/production';
 
     abstract public function getEndPoint();
 

@@ -55,7 +55,7 @@ class DirectAuthorizeRequest extends AbstractRequest
         $this->setDate($now);
 
         $card = $this->getCard()->getParameters();
-
+        $data['version'] = 3;
         $data['payment'] = array(
             'amount' => $this->getAmountInteger(),
             'currency' => $this->getCurrencyNumeric(),
@@ -71,6 +71,7 @@ class DirectAuthorizeRequest extends AbstractRequest
             'amount' => $this->getAmountInteger(),
             'currency' => $this->getCurrencyNumeric(),
         );
+//dump($this->getAmountInteger());die;
 
         $data['card']['number'] = $card['number'];
         $data['card']['type'] = 'MASTERCARD';
@@ -94,6 +95,8 @@ class DirectAuthorizeRequest extends AbstractRequest
      */
     protected function createResponse($data)
     {
+        //$res = new DirectAuthorizeResponse($this, $data);
+        //dump($res);die;
         return $this->response = new DirectAuthorizeResponse($this, $data);
     }
 }

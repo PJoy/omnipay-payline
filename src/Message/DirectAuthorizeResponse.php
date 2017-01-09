@@ -21,9 +21,11 @@ class DirectAuthorizeResponse extends AbstractResponse implements RedirectRespon
 {
     public function isRedirect()
     {
+        //dump($this);die;
         if ($this->isSuccessful()) return true;
         else {
-            dump($this);die;
+            //echo 'L\'opération s\'est mal passée';
+            //dump($this->data->result->longMessage);die;
         }
     }
 

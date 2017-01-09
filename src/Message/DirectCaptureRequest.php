@@ -21,6 +21,7 @@ class DirectCaptureRequest extends DirectAuthorizeRequest
     public function getData()
     {
         $data = parent::getData();
+        //dump($data);die;
         $data['payment']['action'] = 101;
         return array_replace_recursive($this->getBaseData(), $data);
     }
